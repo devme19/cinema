@@ -378,6 +378,7 @@ class _RegisterLoginState extends State<RegisterLogin>  with TickerProviderState
         return null;
       }
   }
+//  test
   String validatePhone(String value) {
     if(value.length != 11)
       return "شماره همراه صحیح نمی باشد";
