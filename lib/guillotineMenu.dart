@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cinema/anim.dart';
 import 'package:cinema/register.dart';
+import 'package:cinema/registerlogin.dart';
 import 'package:flutter/material.dart';
 
 class GuillotineMenu extends StatefulWidget {
