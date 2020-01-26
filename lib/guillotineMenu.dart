@@ -1,9 +1,12 @@
 import 'dart:math';
 
 import 'package:cinema/anim.dart';
+import 'package:cinema/login.dart';
+import 'package:cinema/moviesList.dart';
 import 'package:cinema/register.dart';
 import 'package:cinema/registerlogin.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GuillotineMenu extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class GuillotineMenu extends StatefulWidget {
 enum _GuillotineAnimationStatus { closed, open, animating }
 class _GuillotineMenuState extends State<GuillotineMenu> with SingleTickerProviderStateMixin{
 
+  String userName = "کاربر مهمان";
   double rotationAngle = 0.0;
   double screenWidth,screenHeight;
   AnimationController animationControllerMenu;
@@ -66,9 +70,19 @@ class _GuillotineMenuState extends State<GuillotineMenu> with SingleTickerProvid
         curve: Curves.ease,
       ),
     ));
+    getUserName();
 
   }
-
+  Future<String> getUserName() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Return String
+    userName = prefs.getString('USERNAME');
+    if(userName==null)
+      userName = 'کاربر مهمان';
+    setState(() {
+    });
+    return userName;
+  }
 
   @override
   void dispose() {
@@ -200,11 +214,13 @@ class _GuillotineMenuState extends State<GuillotineMenu> with SingleTickerProvid
                 color: Colors.white,
                   context: context,
                   tiles: [
+                    ListTile(title: listTile(userName,null),onTap: () {
+                    },),
                     ListTile(title: listTile("ورود",Icon(Icons.person,color: Colors.white,)), onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) =>
-                          RegisterLogin()));
+                          Login()));
                     },),
                     ListTile(title: listTile("پیگیری خرید",Icon(Icons.shop,color: Colors.white)),onTap: () {
                       Navigator.push(
@@ -216,6 +232,13 @@ class _GuillotineMenuState extends State<GuillotineMenu> with SingleTickerProvid
                     ListTile(title: listTile("سوالات متداول",Icon(Icons.question_answer,color: Colors.white))),
                     ListTile(title: listTile("درباره ما",Icon(Icons.group,color: Colors.white))),
                     ListTile(title: listTile("تماس با ما",Icon(Icons.call,color: Colors.white))),
+                    ListTile(title: listTile("خروج",Icon(Icons.exit_to_app,color: Colors.white)),onTap: () {
+                      logOut();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>
+                              MoviesList()));
+                    },),
                   ]
               ).toList()
             ),
@@ -229,10 +252,18 @@ class _GuillotineMenuState extends State<GuillotineMenu> with SingleTickerProvid
         Row(
           children: <Widget>[
 
-            Expanded(flex:2,child: Text(title,textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),)),
-            Expanded(flex:1,child: icon),
+            icon==null ? Expanded(flex:1,child: Text(title,textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.bold),)):Expanded(flex:2,child: Text(title,textDirection: TextDirection.rtl,style: TextStyle(color: Colors.white),)),
+            icon==null ? Container():Expanded(flex:1,child: icon),
           ],
         ),
       );
+  }
+  logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //Remove String
+    prefs.remove("TOKEN");
+    //Remove bool
+    prefs.remove("USERNAME");
+    //Remove int
   }
 }

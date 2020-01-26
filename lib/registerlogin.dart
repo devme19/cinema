@@ -22,7 +22,10 @@ class RegisterLogin extends StatelessWidget {
             flex: 1,
             child:
             GestureDetector(
-                child: Text("ورود"),
+                child: Container(
+                    width: double.infinity,
+                    color: Colors.transparent,
+                    child: Center(child: Text("ورود",style: TextStyle(fontSize: 16),))),
                 onTap: () {
                   cardKey.currentState.toggleCard();
                 }),
@@ -38,7 +41,10 @@ class RegisterLogin extends StatelessWidget {
             flex: 1,
             child:
             GestureDetector(
-                child: Text("ثبت نام"),
+                child: Container(
+                  width: double.infinity,
+                  color: Colors.transparent,
+                    child: Center(child: Text("ثبت نام",style: TextStyle(fontSize: 16),))),
                 onTap: () {
                   cardKey.currentState.toggleCard();
                 }),
